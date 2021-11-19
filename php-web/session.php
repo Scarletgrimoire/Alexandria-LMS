@@ -26,7 +26,7 @@
 		//use recieved access token to request user data
 		setcookie("APP_AT", $json['access_token'], time()+60*60, "/", httponly:true );
 		if(isset($json['refresh_token'])) {
-			setcookie("APP_RT", $json['refresh_token'], time()+60*60*24*30, "/", httponly:true );
+			setcookie("APP_RT", $json['refresh_token'], time()+60*60*24*30, "/",httponly:true );
 		}
 		$authorization = "Authorization: Bearer ".$json['access_token'];
 		$ch = curl_init();

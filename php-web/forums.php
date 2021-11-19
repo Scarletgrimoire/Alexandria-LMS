@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <?php
-	include 'refresh.php';
-	include 'infofetch.php';
+	include 'auth_handler.php';
 	session_name('SID');
 	ini_set("session.cookie_httponly", True);
 	session_start();
@@ -10,7 +9,7 @@
 	}
 	if(isset($_SESSION['username']) and (!isset($_COOKIE['APP_AT'])) and (!isset($_COOKIE['APP_RT'])))
 	{
-		
+		 auto_logout() ;
 	}
 ?>
 <html lang= "en">
@@ -35,7 +34,6 @@
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav ms-auto">
 					<li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-					<li class="nav-item"><a class="nav-link" href="/Events">Events</a></li>
 					<li class="nav-item"><a class="nav-link" href="/catalog">Catalog</a></li>
 					<li class="nav-item"><a class="nav-link active" href="/forums">Forums</a></li>
 					<?php 

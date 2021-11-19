@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <?php
-	include 'refresh.php';
+	include 'auth_handler.php';
 	session_name('SID');
 	ini_set("session.cookie_httponly", True);
 	session_start();
@@ -9,7 +9,7 @@
 	}
 	if(isset($_SESSION['username']) and (!isset($_COOKIE['APP_AT'])) and (!isset($_COOKIE['APP_RT'])))
 	{
-		
+		 auto_logout() ;
 	}
 ?>
 <html lang= "en">
@@ -37,7 +37,6 @@
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav ms-auto">
 					<li class="nav-item"><a class="nav-link active" href="/">Home</a></li>
-					<li class="nav-item"><a class="nav-link" href="/Events">Events</a></li>
 					<li class="nav-item"><a class="nav-link" href="/catalog">Catalog</a></li>
 					<li class="nav-item"><a class="nav-link" href="/forums">Forums</a></li>
 					<?php 
@@ -117,7 +116,7 @@
         <div class="container px-5 my-5 px-5">
 			<h1 class="text-center mt-5">Important Links</h1>
 			<p class="mt-4 text-center"> Below you'll find important links related to this system.</p>
-			<a href="" class="text-decoration-none"><h6 class="text-center mt-4">Privacy Policy</h6></a>
+			<a href="/privacy_policy" class="text-decoration-none"><h6 class="text-center mt-4">Privacy Policy</h6></a>
 		</div>
     </section>
     <footer class="py-5 bg-dark">

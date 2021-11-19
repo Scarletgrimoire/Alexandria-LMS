@@ -12,7 +12,7 @@
 		 auto_logout() ;
 	}
 	$ch = curl_init();
-	curl_setopt($ch, CURLOPT_URL,"http://localhost:8000/users/?username=".$_GET['username']);
+	curl_setopt($ch, CURLOPT_URL,"http://localhost:8000/books/?book_id=".$_GET['book_id']);
 	curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET"); 
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     $response = curl_exec($ch);
@@ -26,14 +26,7 @@
     <meta charset ="utf-8" />
 	<meta name = "description" content = "The Alexandria, a Library Management System">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<?php
-	if (isset($json['username'])) {
-		echo "<title>".$json['username']."'s Profile Page</title>";
-	}  
-	else {
-		echo "<title>The Alexandria</title>";
-	}
-	?>
+	<title>The Alexandria</title>
 	
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
@@ -113,112 +106,70 @@
 			</div>
 		</div>
 	</nav>
-	<?php
-	if (isset($json['username'])) {
-	?>
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-lg">
 			</div>
-			<div class="col-lg-9 bg-light px-0">
-				<div class="row pt-1 bg-white"></div>
-				<?php if (isset($_SESSION['new_account'])) { ?>
-				<div class="row mx-0 py-0 border bg-white border-dark">
-					<h6 class="text-center text-dark"> Account Successfully Created! </h6>
-				</div>
-				<?php unset($_SESSION['new_account']);
-				} ?>
-				<div class="col-10 mx-auto">
-					<div class="row py-2">
-						<?php 
-						if(isset($json['img_url'])) {
-						echo '<img class="float-start img-thumbnail col-5" src="'.$json['img_url'].'" alt="profile_img" style="max-width : 200px">';
-						} else {?>
-						<img class="float-start img-thumbnail col-5" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="profile_img" style="max-width : 200px">
-						<?php }
-						echo '<h1 class="col align-self-end">'.htmlspecialchars($json['username']).'</h1>' ?>
-						<div class="col">
-						<?php
-							if (isset($_SESSION['username']) and substr($_SERVER['REQUEST_URI'], 6) == $_SESSION['username']) {
-								echo '<a href="/edit_profile"><button type="submit" class="float-end btn btn-primary">Edit Profile</button></a>';
-							}
-						?>
-						</div>
-					</div>
-					<div class="row mt-2 pt-1 bg-dark">
-						<h4 class="text-white">User Information</h4>
-					</div>
-					<div class="row py-2 bg-white">
-						<ul class="list-group list-group-flush">
-							<li class="list-group-item">
-								<div class="row">
-									<div class="col"><p class="my-0 py-0">Account Created</p></div>
-									<?php echo '<div class="col"><p class="my-0 py-0 float-end">'.DateTime::createFromFormat(DateTime::ISO8601, $json['date_joined'].'Z')->format('F dS, Y').'</p></div>' ?>
-								</div>
-							</li>
-							<?php 
-							if (isset($json['first_name']) or isset($json['last_name'])) { ?>
-							<li class="list-group-item">
-								<div class="row">
-									<div class="col"><p class="my-0 py-0">Name</p></div>
-									<?php
-										$name = '';
-										if (isset($json['first_name'])) {
-											$name = $name.$json['first_name'].' ';
-										}
-										if (isset($json['last_name'])) {
-											$name = $name.$json['last_name'];
-										}
-										echo '<div class="col"><p class="my-0 py-0 float-end">'.htmlspecialchars($name).'</p></div>';
-									?>
-								</div>
-							</li>
-							<?php }?>
-							<?php 
-							if (isset($json['email'])) { ?>
-							<li class="list-group-item">
-								<div class="row">
-									<div class="col"><p class="my-0 py-0">Email</p></div>
-									<?php
-										echo '<div class="col"><p class="my-0 py-0 float-end">'.htmlspecialchars($json['email']).'</p></div>';
-									?>
-								</div>
-							</li>
-							<?php }?>
-							
-						</ul>
-					</div>
-					<div class="row pt-4"></div>
-					<div class="row pt-1 bg-dark">
-						<h4 class="text-white">Lists</h4>
-					</div>
-					<div class="row py-2 bg-white">
-						<ul class="list-group list-group-flush">
-							<li class="list-group-item">
-								<div class="row">
-									<div class="col"><p class="my-0 py-0">This user does not have any lists.</p></div>
-									<div class="col"><p class="my-0 py-0 float-end"></p></div>
-								</div>
-							</li>
-						</ul>
-					</div>
-				</div>
-				<div class="row pt-5"></div>
+			<div class="col-lg-8 bg-white px-0">
+			<h1 class="text-center mt-2">Privacy Policy</h1>
+			<p class="mt-2">This privacy policy ("policy") will help you understand how The Alexandria ("us", "we", "our") uses and protects the data you provide to us when you 
+			visit and use The Alexandria System ("website", "service"). </p>
+			<p>We are committed to protecting the privacy and accuracy of confidential information to the extent possible, subject to provisions of state and federal
+			law. Other than as required by laws that guarantee public access to certain types of information, or in response to subpoenas or other legal instruments 
+			that authorize access, personal information is not actively shared. In particular, we do not re-distribute or sell personal information collected on our web servers. </p>
+			<h3>Information collected: </h3>
+			<p>The Alexandria receives and stores any information you knowingly provide to us when you create an account, publish content,  or fill any forms on the Website. When required,
+			 this information may include the following:</p>
+			<ul>
+			<li>Account details (such as user name, unique user ID, password, etc)</li>
+			<li>Contact information (such as email address, phone number, etc) </li>
+			<li>Basic personal information (such as your name) </li>
+			<li>Any other materials you willingly submit to us (such as comments, images, etc)</li>
+			</ul>
+			<p>You reserve the right not to share the listed information but risk losing access to our services should any information be mandatory. You may contact the administrators of The 
+			Alexandria to find out what information is mandatory.</p>
+			<p>We do not knowingly collect any information from users who are below the age of 13. If you are under 13, we request that you do not share any personal information with our service. If you believe any user is under the age of 13, please contact the administrators so we may remove the user’s personal information.</p>
+			<h3>Cookies</h3>
+			<p>The Alexandria site may use "cookies" in order to deliver web content specific to individual users' interests or to keep track of online purchasing transactions. Sensitive personal
+			 information is not stored within cookies. Please note that you have the ability to accept or decline cookies. Most web browsers automatically accept cookies by default, but you can
+			 modify your browser settings to decline cookies if you prefer. </p>
+
+
+			<h3>Use of collected information:</h3>
+			<p>We collect personal information in order to carry out our services to you. If you decline to share personal information with us, you will be restricted from being able to take full advantage of our service. Personal information is collected for the following purposes:</p>
+			<ul>
+			<li>Create and manage user accounts.</li>
+			<li>Improve user experience.</li>
+			<li>Protect from abuse and malicious users.</li>
+			<li>Run and operate the Website and Services.</li>
+			<li>Respond to inquiries and offer support.</li>
+			</ul>
+			<h3>Distribution of collected information:</h3>
+			<p>The Alexandria will not disclose, without your consent, personal information collected about you, except for certain explicit circumstances in which disclosure is required by law.</p>
+			<p>The Alexandria will not distribute or sell personal information to third-party organizations.</p>
+			<h3>Privacy Statement Revisions:</h3>
+			<p>This Privacy Statement was last revised on 18 November 2021. We may change this Privacy Statement at any time and for any reason. We encourage you to review this Privacy Statement each time you visit the website.</p>
+			<p>If we make a significant change to our Privacy Statement, we will post a notice on the homepage of our web site for a period of time after the change is made. </p>
+			<h3>Responsibility for External Sites:</h3>
+			<p>This website may contain links to other web sites. Some of those web sites may be operated by third parties. We provide the links for your convenience, but we do not review,
+			 control, or monitor the privacy practices of websites operated by others. </p>
+
+			<p>We are not responsible for the performance of websites operated by third parties or for your business dealings with them. Therefore, whenever you leave this website we recommend 
+			that you review each website's privacy practices and make your own conclusions regarding the adequacy of these practices.</p>
+			<h3>Restricting the Collection of your Personal Data:</h3>
+			<p>At some point, you might wish to restrict the use and collection of your personal data. You can achieve this by doing the following:</p>
+			<p>When you are filling the forms on the website, make sure to check if there is a box which you can leave unchecked, if you don't want to disclose your personal information.</p>
+			<p>If you have already agreed to share your information with us, feel free to contact us via email and we will be more than happy to change this for you.</p>
+			<p>The Alexandria will not lease, sell or distribute your personal information to any third parties, unless we have your permission. We might do so if the law forces us. We will retain and 
+			use your Personal Information for the period necessary as long as your user account remains active, to enforce our agreements, resolve disputes, and unless a longer retention period is required or 
+			permitted by law. By using our service, you agree to follow the terms of service laid out and to be bound to this policy and any future updates amended.</p>
+
 			</div>
 			<div class="col-lg">
 			</div>
 		</div>
 		<div class="row py-4 bg-white"></div>
 	</div>
-	<?php
-	}  
-	else { ?>
-	<div class="container-fluid text-center">
-		<h1>User does not exist!</h1>
-		<p>Maybe you clicked on a bad link?</p>
-	</div>
-	<?php }
-	?>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 	<script>
 		<?php 

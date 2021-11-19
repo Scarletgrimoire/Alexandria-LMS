@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <?php
-	include 'refresh.php';
+	include 'auth_handler.php';
 	session_name('SID');
 	ini_set("session.cookie_httponly", True);
 	session_start();
@@ -9,6 +9,7 @@
 	}
 	if(isset($_SESSION['username']) and (!isset($_COOKIE['APP_AT'])) and (!isset($_COOKIE['APP_RT'])))
 	{
+		 auto_logout() ;
 	}
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL,"http://localhost:8000/forum/topic?topic_id=".$_GET['topic_id']);
@@ -40,7 +41,6 @@
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav ms-auto">
 					<li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-					<li class="nav-item"><a class="nav-link" href="/Events">Events</a></li>
 					<li class="nav-item"><a class="nav-link" href="/catalog">Catalog</a></li>
 					<li class="nav-item"><a class="nav-link active" href="/forums">Forums</a></li>
 					<?php 
@@ -124,7 +124,7 @@
 							else {
 								echo '<img class="my-2 img-thumbnail" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="profile_img" style="max-width : 100px">';
 							}
-							echo '<h6 class="fw-normal small">'.htmlspecialchars($json['creator_username']).'</h6>'
+							echo '<h6 class="fw-normal small">'.htmlspecialchars($json['creator_username']).'</h6>';
 						?>
 						</a>
 					</div>
@@ -132,33 +132,6 @@
 						<?php echo '<p class="fw-light mt-1 mb-0">Posted on: '."<script>let options = {dateStyle: 'long', timeStyle: 'short'}; document.write(new Date('".$json['date_created']."Z').toLocaleString(undefined, options));</script></p>" ?>
 						<div class="row mt-auto text-wrap text-break" style="min-height:100px">
 							<h6 class="mb-0 mt-1 fw-normal lh-base"><?php echo htmlspecialchars($json['body'])?></h6>
-						</div>
-						<div class="mx-1">
-						<?php
-							if ((isset($_SESSION['UID'])) and (isset($_SESSION['scope'])) and ($_SESSION['UID'] == $json['UID']) and ($_SESSION['scope'] == 'TA-Administrator')) {
-						?>
-							<button type="submit" class="btn btn-outline-danger fw-bold float-end ms-2 my-2">Delete</button>
-							<button type="submit" class="btn btn-outline-primary fw-bold float-end mx-2 my-2">Edit</button>
-							<?php if($json['pinned'] == 1) { ?>
-								<button type="submit" class="btn btn-outline-dark fw-bold float-end me-2 my-2">Unpin</button>
-							<?php } else { ?>
-								<button type="submit" class="btn btn-outline-dark fw-bold float-end me-2 my-2">Pin</button>
-							<?php }
-							} else if ((isset($_SESSION['UID'])) and ($_SESSION['UID'] == $json['UID'])) {
-						?>
-							<button type="submit" class="btn btn-outline-danger fw-bold float-end ms-2 my-2">Delete</button>
-							<button type="submit" class="btn btn-outline-primary fw-bold float-end mx-2 my-2">Edit</button>
-						<?php
-							} else if ((isset($_SESSION['scope'])) and  ($_SESSION['scope'] == 'TA-Administrator')) {
-						?>
-							<button type="submit" class="btn btn-outline-danger fw-bold float-end ms-2 my-2">Delete</button>
-							<?php if($json['pinned'] == 1) { ?>
-								<button type="submit" class="btn btn-outline-dark fw-bold float-end me-2 my-2">Unpin</button>
-							<?php } else { ?>
-								<button type="submit" class="btn btn-outline-dark fw-bold float-end me-2 my-2">Pin</button>
-						<?php }
-							}
-						?>
 						</div>
 					</div>
 				</div>
@@ -225,23 +198,6 @@
 						<?php echo '<p class="fw-light mt-1 mb-0">Posted on: '."<script>document.write(new Date('".$json['date_created']."Z').toLocaleString(undefined, options));</script></p>" ?>
 						<div class="row mt-auto text-wrap text-break" style="min-height:100px">
 							<h6 class="mb-0 mt-1 fw-normal lh-base"><?php echo htmlspecialchars($json['body'])?></h6>
-						</div>
-						<div class="mx-1">
-						<?php
-							if ((isset($_SESSION['UID'])) and (isset($_SESSION['scope'])) and ($_SESSION['UID'] == $json['UID']) and ($_SESSION['scope'] == 'TA-Administrator')) {
-						?>
-							<button type="submit" class="btn btn-outline-danger fw-bold float-end ms-2 my-2">Delete</button>
-							<button type="submit" class="btn btn-outline-primary  fw-bold float-end mx-2 my-2">Edit</button>
-						<?php 
-							} else if ((isset($_SESSION['UID'])) and ($_SESSION['UID'] == $json['UID'])) {
-						?>
-							<button type="submit" class="btn btn-outline-danger fw-bold float-end ms-2 my-2">Delete</button>
-							<button type="submit" class="btn btn-outline-primary fw-bold float-end mx-2 my-2">Edit</button>
-						<?php
-							} else if ((isset($_SESSION['scope'])) and ($_SESSION['scope'] == 'TA-Administrator')) {
-						?>
-							<button type="submit" class="btn btn-outline-danger fw-bold float-end ms-2 my-2">Delete</button>
-						<?php } ?>
 						</div>
 					</div>
 				</div>

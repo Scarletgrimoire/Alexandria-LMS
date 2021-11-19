@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <?php
-	include 'refresh.php';
-	include 'infofetch.php';
+	include 'auth_handler.php';
 	session_name('SID');
 	ini_set("session.cookie_httponly", True);
 	session_start();
@@ -10,7 +9,7 @@
 	}
 	if(isset($_SESSION['username']) and (!isset($_COOKIE['APP_AT'])) and (!isset($_COOKIE['APP_RT'])))
 	{
-		
+		 auto_logout() ;
 	}
 ?>
 <html lang= "en">
@@ -35,7 +34,6 @@
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav ms-auto">
 					<li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-					<li class="nav-item"><a class="nav-link" href="/events">Events</a></li>
 					<li class="nav-item"><a class="nav-link active" href="/catalog">Catalog</a></li>
 					<li class="nav-item"><a class="nav-link" href="/forums">Forums</a></li>
 					<?php 
@@ -118,7 +116,8 @@
 					<?php unset($_SESSION['missing_requirements']);
 					} ?>
 					<h2 class="col text-white mt-2 mx-0">Library Catalog</h2>
-					<button class="btn btn-outline-light fw-bold float-end my-1 me-1" style="width: 200px;"  data-bs-toggle="modal" data-bs-target="#addBook" id="postModal">Add Book</button>
+					<?php if ((isset($_SESSION['scope'])) and (($_SESSION['scope'] == 'TA-Administrator') or ($_SESSION['scope'] == 'TA-Librarian'))) { ?>
+					<button class="btn btn-outline-light fw-bold float-end my-1 me-1" style="width: 200px;"  data-bs-toggle="modal" data-bs-target="#addBook" id="addModal">Add Book</button>
 					<div class="modal fade" id="addBook">
 						<div class="modal-dialog modal-lg modal-dialog-centered">
 							<div class="modal-content">
@@ -147,7 +146,7 @@
 										</div>
 										<div class="mt-2">
 											<label for="publisher" class="form-label">Publisher</label>
-											<input type="text" maxlength="200" class="form-control" name="publisher" placeholder="Maximum length of 200 characters">
+											<input type="text" maxlength="200" class="form-control" name="publisher" placeholder="Maximum length of 200 characters" required>
 										</div>
 										<div class="mt-2">
 											<label for="isbn13" class="form-label">ISBN 13</label>
@@ -169,6 +168,7 @@
 							</div>
 						</div>
 					</div>
+					<?php } ?>
 				</div>
 				<div class="row bg-white border mx-0">
 					<h5 class="mt-2">Search for books in the catalog</h5>
@@ -197,7 +197,7 @@
 						
 					$jsons = json_decode($response, true);
 					foreach ($jsons as $json) { ?>
-					<a href="<?php echo ''; ?>" class="border bg-white list-group-item py-2 p-0">
+					<a href="<?php echo '/book/'.$json['book_id']; ?>" class="border bg-white list-group-item py-2 p-0">
 						<div class="row m-0 px-0 mx-0">
 							<div class="p-0 align-self-center text-center" style="width: 150px;">
 								<img src="/assets/no-img.png" alt="no image" style="max-width: 125px;">

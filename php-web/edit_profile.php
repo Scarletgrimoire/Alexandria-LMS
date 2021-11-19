@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <?php
-	include 'refresh.php';
+	include 'auth_handler.php';
 	session_name('SID');
 	ini_set("session.cookie_httponly", True);
 	session_start();
@@ -9,9 +9,10 @@
 	}
 	if(isset($_SESSION['username']) and (!isset($_COOKIE['APP_AT'])) and (!isset($_COOKIE['APP_RT'])))
 	{
+		 auto_logout() ;
 	}	
 	if(!isset($_SESSION['username'])) {
-		header("location: index");
+		header('Location: index');
 	}
 ?>
 <html lang= "en">
@@ -35,7 +36,6 @@
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav ms-auto">
 					<li class="nav-item"><a class="nav-link" href="/index">Home</a></li>
-					<li class="nav-item"><a class="nav-link" href="/events">Events</a></li>
 					<li class="nav-item"><a class="nav-link" href="/catalog">Catalog</a></li>
 					<li class="nav-item"><a class="nav-link" href="/forums">Forums</a></li>
 					<?php 
@@ -277,6 +277,35 @@
 			</div>
 		</div>
 	</div>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+	<script>
+		<?php 
+		if ((isset($_SESSION['locked_account'])) or (isset($_SESSION['login_failed']))) { ?>
+		var loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+		if (localStorage.getItem('modalSet') == 'true') {
+			loginModal.show()
+		}
+		<?php 
+			if (isset($_SESSION['login_failed'])) {
+				unset($_SESSION['login_failed']);
+			}
+			if (isset($_SESSION['locked_account'])) {
+				unset($_SESSION['locked_account']);
+			}
+		}	
+			
+			if (!isset($_SESSION['username'])) { ?>
+		var modalChanges = document.getElementById('loginModal')
+		modalChanges.addEventListener('hidden.bs.modal', function (event) {
+			localStorage.removeItem('modalSet');
+		})
+
+		var modalButton = document.getElementById('loginModalZ');
+		modalButton.onclick = function() {
+			localStorage.setItem('modalSet', 'true');
+		}; 
+		<?php }
+		?>
+	</script>
 </body>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </html>
